@@ -1,8 +1,10 @@
 (defun alplang-repl ()
-  (let ((input-command (alplang-read-inputs)))
-    (unless (eq (car input-command) 'alp-exit)
-      (alplang-return (alplang-eval-sexp input-command))
-      (alplang-repl))))
+  (loop named main
+	do
+	   (let ((input-command (alplang-read-inputs)))
+	     (if (eq (car input-command) 'alp-exit)
+		 (return-from main 'goodbye)
+		 (alplang-return (alplang-eval-sexp input-command))))))
 
 (defun alplang-read-inputs ()
   (if (eq (char (read-line) 1) #\')
